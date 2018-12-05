@@ -1,4 +1,21 @@
-<script lang="jsx">
+<template>
+  <svg xmlns="http://www.w3.org/2000/svg"
+       version="1.1"
+       class="m-icon"
+       :class="classes"
+       style="fill:currentColor"
+       :height="height"
+       :width="width"
+       :viewBox="viewBox">
+    <template v-if="Icon && Icon.paths">
+      <path v-for="(path, i) in Icon.paths" :key="`path-${i}`" :d="path"/>
+    </template>
+    <template v-if="Icon && Icon.polygons">
+      <polygon v-for="(polygon, i) in Icon.polygons" :key="`polygon-${i}`" v-bind="polygon"/>
+    </template>
+  </svg>
+</template>
+<script>
   const prefix = 'm-icon'
 
   const Icons = {}
@@ -13,7 +30,7 @@
 
   export default {
     name: 'MIcon',
-    functional: true,
+    // functional: true,
     props: {
       name: {
         type: String,
@@ -28,33 +45,32 @@
         default: sizeMap['md'],
       },
     },
-    render (createElement, context){
-      const name = context.props.name
-      const icon = Icons[name]
-      if (icon === undefined) {
-        console.error(`存在未注册的图标${name}`)
-        return <template />
+    computed: {
+      Icon() {
+        const { name } = this
+        if (Icons[name] === undefined) {
+          console.error(`存在未注册的图标${name}`)
+          return {}
+        }
+        return Icons[name]
+      },
+      classes() {
+        return {
+          [`m-icon-${this.name}`]: true
+        }
+      },
+      height() {
+        return typeof this.size === 'number' ? this.size : sizeMap[this.size]
+      },
+      width() {
+        return this.height / (Number(this.Icon.height) / Number(this.Icon.width))
+      },
+      viewBox() {
+        return this.Icon.viewBox
       }
-      const height = context.props.size ? context.props.size : 20
-      const width = height / (Number(icon.height) / Number(icon.width))
-      const staticClasses = context.data.staticClass !== undefined ? context.data.staticClass : ''
-      const classes = context.data.class !== undefined ? context.data.class : ''
-      const styles = Object.assign({fill:'currentColor'}, context.data.style, context.data.staticStyle)
-
-      return (
-        <svg xmlns="http://www.w3.org/2000/svg"
-             version="1.1"
-             staticClass={`${prefix} ${prefix}--${name} ${staticClasses}`}
-             class={classes}
-             style={styles}
-             height={height}
-             width={width}
-             viewBox={icon.viewBox}
-        >
-          {icon.paths ? icon.paths.map(path => <path d={path} />) : ''}
-          {icon.polygons ? icon.polygons.map(path => <polygon points={path} />) : ''}
-        </svg>
-      )
+    },
+    mounted(){
+      console.log(this.Icon)
     }
   }
 

@@ -1,8 +1,9 @@
 import packages from './package.json'
+// import babel from 'rollup-plugin-babel'
 import buble from 'rollup-plugin-buble'
 import resolve from 'rollup-plugin-node-resolve'
 import { uglify } from 'rollup-plugin-uglify'
-import vuePlugin from 'rollup-plugin-vue'
+import VuePlugin from 'rollup-plugin-vue'
 
 const config = [
   {
@@ -12,7 +13,7 @@ const config = [
       format: 'es'
     },
     plugins: [
-      vuePlugin({
+      VuePlugin({
         compileTemplate: true,
         css: true
       }),

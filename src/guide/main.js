@@ -3,7 +3,7 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 import MIcon from '../index'
-import ICON1 from '../../icons/3d_rotation'
+import ICON1 from '../../lib/icons/3d_rotation'
 
 Vue.use(MIcon, [ICON1])
 
