@@ -1,7 +1,7 @@
 {
   "name": "@megmore/icons",
   "version": "0.0.1",
-  "private": true,
+  "description": "material icons vue组件",
   "main": "lib/index.esm.js",
   "umd": "lib/index.umd.js",
   "scripts": {
